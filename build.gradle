@@ -19,3 +19,12 @@ testing {
         }
     }
 }
+
+tasks.named('test') {
+    useJUnitPlatform()
+    
+    // Show standard out and standard error of the test JVM on the console
+    testLogging {
+        showStandardStreams = true
+    }
+}
