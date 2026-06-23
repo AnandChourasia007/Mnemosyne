@@ -1,11 +1,12 @@
 package com.mnemosyne.library;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.File;
+import java.time.Duration;
+import java.time.Instant;
+
 
 public class MnemosyneEngine {
     
@@ -36,14 +37,32 @@ public class MnemosyneEngine {
         System.out.println("Reading the dataset.");
         
         MnemosyneEngine engine = new MnemosyneEngine();
-        String result = engine.readDataset("dataset_10");
-        
+        String result = engine.readDataset(AppConfig.searchPath);
+        System.out.println("Size of result: " + result.length());
+
         Instant end = Instant.now();
-        Duration elapsed = Duration.between(start, end);
-        System.out.println("Seconds elapsed: " + elapsed.toSeconds());
+        System.out.println("Reading input in main took: " + Duration.between(start, end).toMillis() + "ms");
+        
+        System.out.println("Invoking search for, " + AppConfig.searchString);
+        int rc = returnCount(result, AppConfig.searchString);
+        System.out.println("Word frequency: " + rc);
     }
 
     public boolean someLibraryMethod() {
         return true;
+    }
+
+    // test function that returns the count of str in text
+    private static int returnCount(String text, String str) {
+        Instant start = Instant.now();
+        int cnt = 0;
+        str = str.toLowerCase();
+        String[] words = text.split("\\W+");
+        for(String word: words) {
+            if((word.toLowerCase()).equals(str)) cnt++;
+        }
+        Instant end = Instant.now();
+        System.out.println("returnCount() took: " + Duration.between(start, end).toMillis() + "ms");
+        return cnt;
     }
 }
